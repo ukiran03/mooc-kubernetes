@@ -1,3 +1,5 @@
+### When using in non-declarative fashion
+
 # Build the local image
 docker build -t log-output:1.1 .
 
