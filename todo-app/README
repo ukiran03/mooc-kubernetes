@@ -1,6 +1,10 @@
+## See manifests/deployment.yaml for declarative
+
 # How to start the servre
 $ PORT=8080 go run main.go
 
+
+### When using in non-declarative fashion
 # Build the local image
 docker build -t todo-app:1.2 .
 
