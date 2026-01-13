@@ -1,5 +1,5 @@
-# Updates the deployment and restarts the pod
-kubectl apply -f manifests/deployment.yaml
+# Using NodePort Service to enable access the project
+See manifests/service.yaml
 
-# Provide the port, that we'd like access the server from
-kubectl port-forward todo-app-dep-598ddbf954-52s8n 3003:3000
+As we've published 8082 as 30080 we can access it now via
+http://localhost:8082
