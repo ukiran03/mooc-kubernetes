@@ -1,23 +1,5 @@
-## See manifests/deployment.yaml for declarative
+# Updates the deployment and restarts the pod
+kubectl apply -f manifests/deployment.yaml
 
-# How to start the servre
-$ PORT=8080 go run main.go
-
-
-### When using in non-declarative fashion
-# Build the local image
-docker build -t todo-app:1.2 .
-
-# Import the local image
-k3d image import todo-app:1.2 -c k3s-default
-
-# Create Deployment with local image
-kubectl create deployment todo-app-dep --image=todo-app:1.2
-
-# Checking
-# STATUS: CrashLoopBackOff due to missing env PORT
-kubectl get deployments
-kubectl get pods
-
-# Check Logs
-kubectl logs -f todo-app-dep-5d6558c59f-vb8b7
+# Provide the port, that we'd like access the server from
+kubectl port-forward todo-app-dep-598ddbf954-52s8n 3003:3000
