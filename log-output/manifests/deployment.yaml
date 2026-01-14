@@ -6,7 +6,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output
+      app: log-output # This MUST match the Service selector
   template:
     metadata:
       labels:
@@ -14,4 +14,6 @@ spec:
     spec:
       containers:
       - name: log-output
-        image: ushakiran369/log-output:latest
+        image: ushakiran369/log-output:2
+        ports:
+          - containerPort: 3000 # Go app's PORT

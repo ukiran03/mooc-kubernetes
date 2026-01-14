@@ -1,17 +1,13 @@
-### When using in non-declarative fashion
+- deployment: Will start one copy of Go app and label it **app:log-output**
 
-# Build the local image
-docker build -t log-output:1.1 .
+- service: Will watch for any pod labeled **app: log-output** and give
+  them an interal port **2345**
 
-# Import the local image
-k3d image import log-output:1.1 -c k3s-default
+- ingress: Will take traffic from the internet and send it to the
+  Service on port **2345**
 
-# Create Deployment with local image
-kubectl create deployment log-output-dep --image=log-output:1.1
 
-# Checking
-kubectl get deployments
-kubectl get pods
-
-# Check Logs
-kubectl logs -f log-output-dep-df45cfdd-hh4sj
+# How to start
+``` sh
+kubectl apply -f manifests
+```
