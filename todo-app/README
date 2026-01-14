@@ -1,5 +1,3 @@
-# Using NodePort Service to enable access the project
-See manifests/service.yaml
+$ kubectl apply -f manifests
 
-As we've published 8082 as 30080 we can access it now via
-http://localhost:8082
+$ curlie localhost:8081

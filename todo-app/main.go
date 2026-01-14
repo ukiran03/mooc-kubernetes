@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -15,7 +16,8 @@ type PageData struct {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("Error: env PORT was unset")
+		fmt.Println("env PORT was unset\nUsing Port 3000")
+		port = "3000"
 	}
 
 	addr := ":" + port
@@ -28,7 +30,7 @@ func main() {
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	data := PageData{
 		Title:   "Hello from Todo-App",
-		Message: "This is from Exercise: 1.5",
+		Message: "This is from Exercise: 1.8",
 	}
 
 	tmpl, err := template.ParseFiles("./ui/index.tmpl")

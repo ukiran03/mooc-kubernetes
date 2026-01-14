@@ -6,7 +6,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-app
+      app: todo-app # This MUST match the Service selector
   template:
     metadata:
       labels:
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: ushakiran369/todo-app:v3
+          image: ushakiran369/todo-app:v1.8
           ports:
             - containerPort: 3000 # Explicitly document the port
           env:
