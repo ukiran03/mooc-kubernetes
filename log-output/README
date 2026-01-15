@@ -1,13 +1,5 @@
-- deployment: Will start one copy of Go app and label it **app:log-output**
-
-- service: Will watch for any pod labeled **app: log-output** and give
-  them an interal port **2345**
-
-- ingress: Will take traffic from the internet and send it to the
-  Service on port **2345**
-
-
-# How to start
-``` sh
+# Start the deployment
 kubectl apply -f manifests
-```
+
+# Visit
+curlie localhost:8081

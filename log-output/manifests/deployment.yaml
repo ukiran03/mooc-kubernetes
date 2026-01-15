@@ -1,19 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: log-output-dep
+  name: log-get-data-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: log-output # This MUST match the Service selector
+      app: log-get-data
   template:
     metadata:
       labels:
-        app: log-output
+        app: log-get-data
     spec:
+      volumes:
+        - name: shared-data
+          emptyDir: {}
       containers:
-      - name: log-output
-        image: ushakiran369/log-output:2
-        ports:
-          - containerPort: 3000 # Go app's PORT
+        - name: log-data
+          image: ushakiran369/log-data:v2
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/src/app
+          env:
+            - name: OUTFILE
+              value: "/usr/src/app/output.txt"
+        - name: get-data
+          image: ushakiran369/get-data:v2
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: shared-data
+              mountPath: /usr/src/app
+          env:
+            - name: OUTFILE
+              value: "/usr/src/app/output.txt"
+            - name: PORT
+              value: "9080"

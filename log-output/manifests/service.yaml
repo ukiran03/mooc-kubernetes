@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: log-output-svc
+  name: log-get-data-dep-svc
 spec:
   type: ClusterIP
   selector:
-    app: log-output
+    app: log-get-data
   ports:
-    - port: 2345
+    - port: 2346
       protocol: TCP
-      targetPort: 3000
+      targetPort: 9080

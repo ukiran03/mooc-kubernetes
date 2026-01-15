@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ukiran-mooc-ingress
+  name: mooc-logdata-ingress
 spec:
   rules:
     - http:
@@ -10,6 +10,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: log-output-svc
+                name: log-get-data-dep-svc
                 port:
-                  number: 2345
+                  number: 2346
