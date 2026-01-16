@@ -1,0 +1,11 @@
+# Start deployment
+$ kubectl apply -f manifests/
+
+# The log-output app
+$ curlie localhost:8081/log
+2026-01-16 07:37:05 f931b72a
+Ping / Pongs: 8
+
+# The ping-pong app
+$ curlie localhost:8081/pingpong
+ping 9
