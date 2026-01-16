@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-pong-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: log-pong
+  ports:
+    - name: log-port
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    - name: ping-port
+      port: 3001
+      protocol: TCP
+      targetPort: 3001

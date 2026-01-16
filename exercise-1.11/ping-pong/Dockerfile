@@ -5,6 +5,6 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -o ping-pong .
 
 FROM alpine:latest
-WORKDIR /root/
+WORKDIR /usr/src/app
 COPY --from=builder /app/ping-pong .
 CMD ["./ping-pong"]
