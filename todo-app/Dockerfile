@@ -4,8 +4,7 @@ WORKDIR /app
 
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -o todo-app .
-
+RUN CGO_ENABLED=0 GOOS=linux go build -o todo-app .
 
 FROM alpine:3.21
 

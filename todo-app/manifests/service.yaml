@@ -7,6 +7,6 @@ spec:
   selector:
     app: todo-app # Ensure this matches the 'labels' in your Deployment
   ports:
-    - port: 2345 # Internal cluster port
+    - port: 2345 # Internal cluster port, matchs the Ingress 'number'
       protocol: TCP
-      targetPort: 3000 # The port your app runs on inside the container
+      targetPort: 3000 # The port your app runs inside the container

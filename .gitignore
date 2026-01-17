@@ -1,3 +1,14 @@
 /material-example/
 /practice/
 /_ref/
+
+# Ignore all common image formats
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.svg
+*.webp
+*.tiff
+*.ico
