@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/go-playground/form/v4"
 )
 
 type PageData struct {
@@ -17,6 +20,13 @@ const (
 	pathname = "./ui/static/image.jpg"
 	url      = "https://picsum.photos/1200"
 )
+
+// TODO: Rewriting the structure
+type application struct {
+	tasks         *models.TaskModel
+	templateCache map[string]*template.Template
+	formDecoder   *form.Decoder
+}
 
 var currentImg = &Image{}
 
