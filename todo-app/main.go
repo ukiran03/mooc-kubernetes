@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -10,9 +9,8 @@ import (
 )
 
 type PageData struct {
-	Title   string
-	Message string
-	Image   string
+	Image    string
+	TaskList []Task
 }
 
 const (
@@ -39,27 +37,17 @@ func main() {
 	addr := ":" + port
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", homeHandler)
+	_, img := GetImage(currentImg)
+	data := PageData{
+		Image:    strings.TrimPrefix(img.name, "./ui"),
+		TaskList: demoTasks,
+	}
+
+	mux.HandleFunc("/{$}", data.homeHandler)
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	log.Printf("Starting Todo-App server on %s", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
-}
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	_, img := GetImage(currentImg)
-	data := PageData{
-		Title:   "Hello from Todo-App",
-		Message: "This is from Exercise: 1.12",
-		Image:   strings.TrimPrefix(img.name, "./ui"),
-	}
-
-	tmpl, err := template.ParseFiles("./ui/index.tmpl")
-	if err != nil {
-		http.Error(w, "Could not load template", http.StatusInternalServerError)
-		return
-	}
-	tmpl.Execute(w, data)
 }
