@@ -10,8 +10,8 @@
 		<img alt="" src={{ .Image }} width="400" height="500" />
 	</div>
 	<div class="todo-container">
-		<form action="/" method="POST">
-			<input name="todo-item" type="text" placeholder="What needs to be done?" id="todo-item" required/>
+		<form action="/create" method="POST">
+			<input name="title" type="text" placeholder="What needs to be done?" id="todo-item" required/>
 			<!--  -->
 			<input type="submit" value="Add Task"/>
 		</form>

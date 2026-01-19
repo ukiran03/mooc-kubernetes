@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"slices"
 )
 
 type TaskState int
@@ -43,10 +44,13 @@ func (m *TaskModel) GetTasks() ([]Task, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
+
+	// Newest first
+	slices.Reverse(taskList)
 	return taskList, nil
 }
 
-func (m *TaskModel) Insert(title, state string) (int, error) {
+func (m *TaskModel) Insert(title string, state TaskState) (int, error) {
 	stmt := `INSERT INTO tasks (title, state) VALUES (?, ?)`
 
 	result, err := m.DB.Exec(stmt, title, state)

@@ -34,9 +34,9 @@ func Print(t *Task) string {
 	var state string
 	switch t.State {
 	case StateTodo:
-		state = "[X]"
-	case StateDone:
 		state = "[ ]"
+	case StateDone:
+		state = "[X]"
 	}
 	return fmt.Sprintf("%s %s\n", state, t.Title)
 }
@@ -54,6 +54,10 @@ func newTemplateCache() (*template.Template, error) {
 		return nil, err
 	}
 	return ts, nil
+}
+
+func (app *application) clientError(w http.ResponseWriter, status int) {
+	http.Error(w, http.StatusText(status), status)
 }
 
 func (app *application) serverError(

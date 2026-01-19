@@ -34,7 +34,6 @@ func init() {
 }
 
 func main() {
-	fmt.Println("hello")
 	port := os.Getenv("PORT")
 	if port == "" {
 		fmt.Println("env PORT was unset\nUsing Port 3000")
@@ -83,6 +82,6 @@ func (app *application) routes() http.Handler {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	mux.HandleFunc("/{$}", app.home)
-	// mux.HandleFunc("/create", app.createTask)
+	mux.HandleFunc("POST /create", app.createTask)
 	return mux
 }
