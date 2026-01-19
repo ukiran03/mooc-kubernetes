@@ -14,6 +14,7 @@ USER appuser
 WORKDIR /usr/src/app
 
 COPY --from=builder /app/ui ./ui
+COPY --from=builder /app/tasks.db ./tasks.db
 COPY --from=builder /app/todo-app .
 
 CMD ["./todo-app"]

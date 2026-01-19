@@ -4,3 +4,17 @@ CREATE TABLE tasks (
     title      TEXT NOT NULL,
     state      INTEGER NOT NULL CHECK (state IN (0, 1))
 );
+
+
+-- Demo Tasks
+INSERT INTO tasks (title, state) VALUES
+('Buy groceries', 1),
+('Finish project documentation', 0),
+('Schedule dentist appointment', 0),
+('Pay electricity bill', 1),
+('Gym workout - Leg day', 1),
+('Read 20 pages of a book', 0),
+('Update software dependencies', 0),
+('Call mom', 1),
+('Fix bug in login module', 0),
+('Prepare meal plan for next week', 0);

@@ -18,7 +18,7 @@ spec:
             claimName: todo-app-claim
       containers:
         - name: todo-app
-          image: todo-app:v4    # local image
+          image: todo-app:v5    # local image
           imagePullPolicy: Never
           ports:
             - containerPort: 3000 # Explicitly document the port
