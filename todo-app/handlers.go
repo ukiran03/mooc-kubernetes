@@ -1,26 +1,22 @@
 package main
 
 import (
-	"html/template"
-	"log"
 	"net/http"
 )
 
-func (p *PageData) homeHandler(w http.ResponseWriter, r *http.Request) {
-	ts, err := template.New("index.tmpl").Funcs(functions).ParseFiles(
-		"./ui/html/index.tmpl",
-	)
+func (app *application) home(w http.ResponseWriter, r *http.Request) {
+	tasks, err := app.taskdb.GetTasks()
 	if err != nil {
-		http.Error(w, "Could not load template", http.StatusInternalServerError)
+		app.serverError(w, r, err)
 		return
 	}
-
-	err = ts.Execute(w, p)
-	if err != nil {
-		log.Printf("Execution error: %v", err)
+	data := PageData{
+		Image:    app.image,
+		TaskList: tasks,
 	}
+	app.render(w, r, http.StatusOK, data)
 }
 
-func (p *PageData) createTaskHandler(w http.ResponseWriter, r *http.Request) {
+func (app *application) createTask(w http.ResponseWriter, r *http.Request) {
 	// TODO:
 }
