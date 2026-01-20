@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-pong-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: log-pong
+  template:
+    metadata:
+      labels:
+        app: log-pong
+    spec:
+      containers:
+        - name: log-output
+          image: log-output:v4  # local image
+          imagePullPolicy: Never
+          env:
+            - name: PING_PORT   # source host port
+              value: "3001"
+            - name: PORT
+              value: "3000"
+        - name: ping-pong
+          image: ping-pong:v4   # local image
+          imagePullPolicy: Never
+          env:
+            - name: PING_PORT   # app port
+              value: "3001"

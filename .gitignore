@@ -3,12 +3,13 @@
 /_ref/
 
 # Ignore all common image formats
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.svg
-*.webp
-*.tiff
-*.ico
+# *.jpg
+# *.jpeg
+# *.png
+# *.gif
+# *.bmp
+# *.svg
+# *.webp
+# *.tiff
+# *.ico
+/todo-app/ui/static/image.jpg

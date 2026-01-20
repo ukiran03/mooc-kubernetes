@@ -7,11 +7,11 @@ spec:
   selector:
     app: log-pong
   ports:
-    - name: log-port
+    - name: log-output-port
       port: 3000
       protocol: TCP
       targetPort: 3000
-    - name: ping-port
+    - name: ping-pong-port
       port: 3001
       protocol: TCP
       targetPort: 3001

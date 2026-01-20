@@ -1,5 +1,0 @@
-# Start the deployment
-kubectl apply -f manifests
-
-# Visit
-curlie localhost:8081
