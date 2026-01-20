@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"slices"
 )
 
@@ -11,7 +12,6 @@ type TaskState int
 const (
 	StateTodo TaskState = iota
 	StateDone
-	// StateInProgress
 )
 
 type Task struct {
@@ -44,7 +44,6 @@ func (m *TaskModel) GetTasks() ([]Task, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-
 	// Newest first
 	slices.Reverse(taskList)
 	return taskList, nil
@@ -52,27 +51,24 @@ func (m *TaskModel) GetTasks() ([]Task, error) {
 
 func (m *TaskModel) Insert(title string, state TaskState) (int, error) {
 	stmt := `INSERT INTO tasks (title, state) VALUES (?, ?)`
-
 	result, err := m.DB.Exec(stmt, title, state)
 	if err != nil {
 		return 0, err
 	}
-
 	id, err := result.LastInsertId()
 	if err != nil {
 		return 0, err
 	}
-
 	return int(id), nil
 }
 
-func (m TaskModel) Update(id int, state TaskState) error {
+// TODO:
+func (m *TaskModel) Update(id int, state TaskState) error {
 	stmt := `UPDATE tasks SET state = ?, where id = ?`
 	result, err := m.DB.Exec(stmt, state, id)
 	if err != nil {
 		return err
 	}
-
 	rowsAffected, err := result.RowsAffected()
 	if err != nil {
 		return err
@@ -82,5 +78,16 @@ func (m TaskModel) Update(id int, state TaskState) error {
 			"could not update: no task found with ID %d", id,
 		)
 	}
+	return nil
+}
+
+func (m *TaskModel) Delete(id int) error {
+	stmt := `DELETE FROM tasks WHERE id = ?`
+	result, err := m.DB.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+	rowsAffected, _ := result.RowsAffected()
+	log.Printf("Deleted %d row(s)", rowsAffected)
 	return nil
 }

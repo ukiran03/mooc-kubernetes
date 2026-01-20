@@ -50,7 +50,7 @@
 }
 
 /* The Text Input */
-#todo-item {
+#taskTitle {
     flex: 1; /* Makes the input take up available space */
     padding: 10px 15px;
     border: 2px solid #e0e0e0;
@@ -60,12 +60,12 @@
     transition: border-color 0.3s ease;
 }
 
-#todo-item:focus {
+#taskTitle:focus {
     border-color: blue; /* Blue border when typing */
 }
 
-/* The Submit Button */
-input[type="submit"] {
+/* Remove the dot before 'button' */
+button[type="submit"] {
     padding: 10px 20px;
     background-color: blue;
     color: white;
@@ -76,6 +76,7 @@ input[type="submit"] {
     transition: background-color 0.3s ease;
 }
 
-input[type="submit"]:hover {
+/* Remove the dot here too */
+button[type="submit"]:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }

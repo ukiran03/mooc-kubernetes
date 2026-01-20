@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux go build -o todo-app .
+RUN CGO_ENABLED=0 GOOS=linux go build -o todo-backend .
 
 FROM alpine:3.21
 
@@ -12,9 +12,7 @@ RUN adduser -D appuser
 USER appuser
 
 WORKDIR /usr/src/app
-
-COPY --from=builder /app/ui ./ui
 COPY --from=builder /app/tasks.db ./tasks.db
-COPY --from=builder /app/todo-app .
+COPY --from=builder /app/todo-backend .
 
-CMD ["./todo-app"]
+CMD ["./todo-backend"]

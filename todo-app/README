@@ -1,3 +1,0 @@
-$ kubectl apply -f manifests
-
-$ curlie localhost:8081

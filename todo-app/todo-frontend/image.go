@@ -24,32 +24,29 @@ func GetImage(img *Image) (bool, *Image) {
 	img.mu.Lock()
 	defer img.mu.Unlock()
 
-	// If modTime is set and was within the last 10 minutes, skip download
 	if !img.modTime.IsZero() && time.Since(img.modTime) < 10*time.Minute {
-		return true, img // Cache hit
-	}
+		fileName, err := downloadImage()
+		if err != nil {
+			log.Printf("Download failed: %v", err)
+			// Treat as Cache hit (fallback to old data)
+			return true, img
+		}
 
-	fileName, err := downloadImage()
-	if err != nil {
-		log.Printf("Download failed: %v", err)
-		// Treat as Cache hit (fallback to old data)
-		return true, img
-	}
+		info, err := os.Stat(fileName)
+		if err != nil {
+			log.Printf("Stat failed: %v", err)
+			// Treat as Cache hit (fallback to old data)
+			return true, img
+		}
+		img.name = fileName
+		img.modTime = info.ModTime()
 
-	info, err := os.Stat(fileName)
-	if err != nil {
-		log.Printf("Stat failed: %v", err)
-		// Treat as Cache hit (fallback to old data)
-		return true, img
 	}
-	img.name = fileName
-	img.modTime = info.ModTime()
-
 	return false, img
 }
 
 func downloadImage() (string, error) {
-	resp, err := http.Get(url)
+	resp, err := http.Get(imageUrl)
 	if err != nil {
 		return "", err
 	}

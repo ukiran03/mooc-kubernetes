@@ -15,6 +15,4 @@ INSERT INTO tasks (title, state) VALUES
 ('Gym workout - Leg day', 1),
 ('Read 20 pages of a book', 0),
 ('Update software dependencies', 0),
-('Call mom', 1),
-('Fix bug in login module', 0),
-('Prepare meal plan for next week', 0);
+('Call Amma', 1);

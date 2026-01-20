@@ -1,0 +1,78 @@
+package main
+
+import (
+	"database/sql"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+
+	_ "modernc.org/sqlite"
+)
+
+type backend struct {
+	taskdb *TaskModel
+}
+
+func main() {
+	port := os.Getenv("BACKEND_PORT")
+	if port == "" {
+		fmt.Println("env BACKEND_PORT was unset\nUsing Port 3000 as Backend_Port")
+		port = "3000"
+	}
+	addr := ":" + port
+
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	b := &backend{
+		taskdb: &TaskModel{DB: db},
+	}
+
+	log.Printf("Starting Todo-App Backend on %s", addr)
+	log.Fatal(http.ListenAndServe(addr, b.routes()))
+}
+
+func (b *backend) routes() http.Handler {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("GET /tasks", b.getTasks)
+	mux.HandleFunc("POST /tasks", b.createTask)
+
+	// Wrap the entire mux with our CORS logic
+	return b.enableCORS(mux)
+}
+
+func (b *backend) enableCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// 1. Set the headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+		// 2. Handle the Pre-flight OPTIONS request
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		// 3. Pass the request to the mux (where it will match GET or POST)
+		next.ServeHTTP(w, r)
+	})
+}
+
+func openDB() (*sql.DB, error) {
+	db, err := sql.Open("sqlite", "./tasks.db")
+	if err != nil {
+		return nil, err
+	}
+	err = db.Ping()
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+	return db, nil
+}
