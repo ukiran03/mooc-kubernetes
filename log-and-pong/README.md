@@ -1,3 +1,5 @@
+Using namespace: exercises
+
 # Log-ouput app: localhost:8081/log
 ![log-output](./assets/log.jpg)
 
