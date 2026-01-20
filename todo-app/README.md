@@ -1,3 +1,5 @@
+**Using Namespace: project**
+
 The `todo-frontend` and `todo-backend` are deployed in separate pods.
 Because the application utilizes **Server-Side Rendering (SSR)**, the
 frontend communicates with the backend via the internal Kubernetes
