@@ -31,7 +31,7 @@ func init() {
 	}
 	backendEnvUrl := os.Getenv("BACKEND_URL")
 	if backendEnvUrl == "" {
-		backendUrl = "http://localhost:3000/tasks"
+		log.Print("Error: env BACKEND_URL was unset!")
 	} else {
 		backendUrl = backendEnvUrl + "/tasks"
 	}

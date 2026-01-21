@@ -7,3 +7,7 @@ Service DNS: `http://todo-backend-svc:80`. This service maps port
 **80** to the backend's container port **3000**.
 
 ![Architecture](./arch.png)
+
+
+# Ex-2.6
+Moved the `BACKEND` and `FRONTEND` ports to `ConfigMap`
