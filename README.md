@@ -21,3 +21,4 @@
 - [2.3](https://github.com/ukiran03/mooc-kubernetes/tree/2.3/log-and-pong)
 - [2.4](https://github.com/ukiran03/mooc-kubernetes/tree/2.4/todo-app)
 - [2.5](https://github.com/ukiran03/mooc-kubernetes/tree/2.5/log-and-pong)
+- [2.6](https://github.com/ukiran03/mooc-kubernetes/tree/2.6/todo-app)
