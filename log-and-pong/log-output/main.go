@@ -12,12 +12,45 @@ import (
 )
 
 type logEnt struct {
-	timeStamp string
-	randStr   string
+	timeStamp   string
+	randStr     string
+	message     string
+	fileContent string
+}
+
+var (
+	message     string
+	fileContent string
+	pingPort    string
+)
+
+func init() {
+	pingPort = os.Getenv("PING_PORT")
+	if pingPort == "" {
+		fmt.Println("env PING_PORT was unset\nUsing Port 3001 as pingPort")
+		pingPort = "3001"
+	}
+
+	message = os.Getenv("MESSAGE")
+	if message == "" {
+		log.Print("env MESSAGE was unset")
+	}
+
+	f := os.Getenv("INFO_FILE")
+	if f == "" {
+		log.Print("env INFO_FILE was unset")
+	} else {
+		data, err := os.ReadFile(f)
+		if err != nil {
+			log.Printf("Read INFO_FILE Error: %v", err)
+		}
+		fileContent = string(data)
+	}
 }
 
 func (l logEnt) String() string {
-	return fmt.Sprintf("%s %s\n", l.timeStamp, l.randStr)
+	return fmt.Sprintf("%s\n%s\n%s %s\n",
+		l.message, l.fileContent, l.timeStamp, l.randStr)
 }
 
 func randomString() string {
@@ -41,16 +74,6 @@ func main() {
 
 	log.Printf("Server starting on %s\n", addr)
 	log.Fatal((http.ListenAndServe(addr, mux)))
-}
-
-var pingPort string
-
-func init() {
-	pingPort = os.Getenv("PING_PORT")
-	if pingPort == "" {
-		fmt.Println("env PING_PORT was unset\nUsing Port 3001 as pingPort")
-		pingPort = "3001"
-	}
 }
 
 var myClient = &http.Client{
@@ -83,8 +106,10 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		count = 0
 	}
 	ent := logEnt{
-		timeStamp: time.Now().Format("2006-01-02 15:04:05"),
-		randStr:   randomString(),
+		timeStamp:   time.Now().Format("2006-01-02 15:04:05"),
+		randStr:     randomString(),
+		message:     message,
+		fileContent: fileContent,
 	}
 	fmt.Fprintf(w, "%v Ping / Pongs: %d", ent, count)
 }

@@ -1,7 +1,6 @@
 Using namespace: exercises
 
-# Log-ouput app: localhost:8081/log
-![log-output](./assets/log.jpg)
+$ kubectl apply -f manifests
 
-# Ping-pong app: localhost:8081/pingpong
-![ping-pong](./assets/pingpong.jpg)
+// Visit: localhost:8081/log
+![/log](./assets/ex-2.5.jpg)
