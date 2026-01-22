@@ -5,25 +5,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 )
 
 type Ping struct {
-	mu    sync.RWMutex
-	count int
-}
-
-func (p *Ping) increment() int {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	p.count++
-	return p.count
-}
-
-func (p *Ping) getCount() int {
-	p.mu.RLock()
-	defer p.mu.RUnlock()
-	return p.count
+	pingdb *PingModel
 }
 
 func main() {
@@ -32,28 +17,24 @@ func main() {
 		fmt.Println("env PING_PORT was unset\nUsing Port 3001 as pingPort")
 		pingPort = "3001"
 	}
-
 	addr := ":" + pingPort
 
-	srv := &Ping{count: 0}
-	mux := http.NewServeMux()
+	db, err := openDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
-	mux.HandleFunc("/", srv.homeHandler)
-	mux.HandleFunc("/pings", srv.getPings)
-	mux.HandleFunc("/pingpong", srv.pingHandler)
+	err = createTable(db)
+	if err != nil {
+		log.Printf("Error createTable: %v", err)
+		return
+	}
+
+	srv := &Ping{
+		pingdb: &PingModel{DB: db},
+	}
 
 	log.Printf("Server starting on %s\n", addr)
-	log.Fatal((http.ListenAndServe(addr, mux)))
-}
-
-func (p *Ping) homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "visit /pingpong")
-}
-
-func (p *Ping) getPings(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "ping %d", p.getCount())
-}
-
-func (p *Ping) pingHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "ping %d", p.increment())
+	log.Fatal((http.ListenAndServe(addr, srv.routes())))
 }
