@@ -1,13 +1,10 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-
-	_ "modernc.org/sqlite"
 )
 
 type backend struct {
@@ -62,17 +59,4 @@ func (b *backend) enableCORS(next http.Handler) http.Handler {
 		// 3. Pass the request to the mux (where it will match GET or POST)
 		next.ServeHTTP(w, r)
 	})
-}
-
-func openDB() (*sql.DB, error) {
-	db, err := sql.Open("sqlite", "./tasks.db")
-	if err != nil {
-		return nil, err
-	}
-	err = db.Ping()
-	if err != nil {
-		db.Close()
-		return nil, err
-	}
-	return db, nil
 }
