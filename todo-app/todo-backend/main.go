@@ -25,6 +25,12 @@ func main() {
 	}
 	defer db.Close()
 
+	err = createInitialseTable(db)
+	if err != nil {
+		log.Printf("Error createInitialseTable: %v", err)
+		return
+	}
+
 	b := &backend{
 		taskdb: &TaskModel{DB: db},
 	}
