@@ -1,2 +1,2 @@
-github.com/rqlite/gorqlite v0.0.0-20250609141355-ac86a4a1c9a8 h1:BoxiqWvhprOB2isgM59s8wkgKwAoyQH66Twfmof41oE=
-github.com/rqlite/gorqlite v0.0.0-20250609141355-ac86a4a1c9a8/go.mod h1:xF/KoXmrRyahPfo5L7Szb5cAAUl53dMWBh9cMruGEZg=
+github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
+github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=

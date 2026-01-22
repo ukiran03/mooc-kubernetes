@@ -7,7 +7,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: todo-backend       # Label specific to backend
+      app: todo-backend
   template:
     metadata:
       labels:
@@ -15,10 +15,32 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: todo-backend:v1
+          image: todo-backend:v1 # TODO:
           imagePullPolicy: Never
           ports:
             - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "postgres-todo-svc"
+            - name: DB_PORT
+              value: "5432"
+            # Map the Secret keys
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-todo-creds
+                  key: username
+            - name: DB_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-todo-creds
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-todo-creds
+                  key: dbname
+
 
 ---
 

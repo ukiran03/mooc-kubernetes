@@ -12,7 +12,6 @@ RUN adduser -D appuser
 USER appuser
 
 WORKDIR /usr/src/app
-COPY --from=builder /app/tasks.db ./tasks.db
 COPY --from=builder /app/todo-backend .
 
 CMD ["./todo-backend"]
