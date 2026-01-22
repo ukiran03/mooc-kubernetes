@@ -14,7 +14,7 @@ spec:
         app: log-pong
     spec:
       containers:
-        - name: log-output
+        - name: log-output-app
           image: log-output:v5  # local image
           imagePullPolicy: Never
           env:
@@ -33,12 +33,33 @@ spec:
             - name: config-vol
               mountPath: /usr/share/app/config
               readOnly: true
-        - name: ping-pong
-          image: ping-pong:v4   # local image
+        - name: ping-pong-app
+          image: ping-pong:latest
           imagePullPolicy: Never
           env:
             - name: PING_PORT   # app port
               value: "3001"
+            # Point to Headless Service name
+            - name: DB_HOST
+              value: "postgres-svc"
+            - name: DB_PORT
+              value: "5432"
+            # Map the Secret keys
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: username
+            - name: DB_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: dbname
       volumes:
         - name: config-vol
           configMap:

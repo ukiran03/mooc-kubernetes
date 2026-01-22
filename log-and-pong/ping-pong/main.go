@@ -25,7 +25,7 @@ func main() {
 	}
 	defer db.Close()
 
-	err = createTable(db)
+	err = initializePingsTable(db)
 	if err != nil {
 		log.Printf("Error createTable: %v", err)
 		return
