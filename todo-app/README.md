@@ -8,4 +8,6 @@ backend for persistent data storage.
 
 Added an houlry **Cronjob** to recommend random wiki articles
 
-![Todo-Project-App With a Cronjob](./cronjob.jpg)
+Added logging to the backend
+
+![Logging](./logging2.jpg)
