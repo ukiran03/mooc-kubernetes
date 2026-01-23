@@ -41,13 +41,13 @@ spec:
                   name: postgres-todo-creds
                   key: dbname
 
-
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
   name: todo-backend-svc  # 1. This is the DNS name
+  namespace: project
 spec:
   selector:
     app: todo-backend

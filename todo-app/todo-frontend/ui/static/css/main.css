@@ -80,3 +80,21 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #0056b3; /* Darker blue on hover */
 }
+
+/* Style all links blue by default */
+a {
+    color: #0000FF; /* Classic Blue */
+    text-decoration: underline;
+}
+
+/* Specifically targeting http to ensure it stays blue
+   or to add unique behavior like a hover effect */
+a[href^="http://"] {
+    color: #0000FF;
+}
+
+/* Professional touch: darkening the blue on hover */
+a:hover {
+    color: #00008B; /* Dark Blue */
+    text-decoration: none;
+}
