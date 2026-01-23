@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 )
 
 type backend struct {
+	logger *slog.Logger
 	taskdb *TaskModel
 }
 
@@ -18,6 +20,7 @@ func main() {
 		port = "3000"
 	}
 	addr := ":" + port
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	db, err := openDB()
 	if err != nil {
@@ -32,11 +35,13 @@ func main() {
 	}
 
 	b := &backend{
+		logger: logger,
 		taskdb: &TaskModel{DB: db},
 	}
-
-	log.Printf("Starting Todo-App Backend on %s", addr)
-	log.Fatal(http.ListenAndServe(addr, b.routes()))
+	logger.Info("Starting Todo-App Backend", "address", addr)
+	err = http.ListenAndServe(addr, b.routes())
+	logger.Error(err.Error())
+	os.Exit(1)
 }
 
 func (b *backend) routes() http.Handler {

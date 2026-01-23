@@ -21,25 +21,39 @@ func (b *backend) createTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
+
 	var t Task
 	if err := readJSON(w, r, &t); err != nil {
-		http.Error(w, "Invalid JSON: "+err.Error(), http.StatusBadRequest)
+		b.logger.Error("failed to decode task JSON", "error", err)
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
 
-	switch length := utf8.RuneCountInString(t.Title); {
-	case length == 0:
-		b.serverError(w, r, nil, "Title cannot be empty")
-		return
-	case length > 100:
-		b.serverError(w, r, nil, "Title is too long (maximum 100 characters)")
+	titleLen := utf8.RuneCountInString(t.Title)
+	if titleLen == 0 || titleLen > 140 {
+		b.logger.Warn("invalid task title length",
+			"length", titleLen,
+			"remote_addr", r.RemoteAddr,
+		)
+		http.Error(
+			w,
+			"Title must be between 1 and 140 characters",
+			http.StatusBadRequest,
+		)
 		return
 	}
-	_, err := b.taskdb.Insert(t.Title, t.State)
+
+	id, err := b.taskdb.Insert(t.Title, t.State)
 	if err != nil {
-		b.serverError(w, r, err, "")
+		b.logger.Error("database insertion failed",
+			"error", err,
+			"title", t.Title,
+		)
+		b.serverError(w, r, err, "Could not save task")
 		return
 	}
+	b.logger.Info("task created successfully", "id", id)
+	w.WriteHeader(http.StatusCreated)
 }
 
 func (b *backend) serverError(
