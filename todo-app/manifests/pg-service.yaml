@@ -9,7 +9,7 @@ spec:
   selector:
     app: postgres
   type: ClusterIP
-  # clusterIP: None
+  clusterIP: None
   ports:
     - protocol: TCP
       port: 5432

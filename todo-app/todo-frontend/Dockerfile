@@ -8,6 +8,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o todo-frontend .
 
 FROM alpine:3.21
 
+# Install curl for debugging
+# We do this as root before switching to the unprivileged user
+RUN apk add --no-cache curl
+
 RUN adduser -D appuser
 USER appuser
 

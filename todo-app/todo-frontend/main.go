@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"log"
@@ -66,6 +68,7 @@ func (f *frontend) routes() http.Handler {
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
 
 	mux.HandleFunc("/{$}", f.homeHandler)
+	mux.HandleFunc("/api/proxy/tasks", f.postHandler)
 	return mux
 }
 
@@ -76,9 +79,41 @@ func (f *frontend) homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := PageData{
-		Image:      f.image,
-		TaskList:   *tasks,
-		BackendURL: backendUrl,
+		Image:    f.image,
+		TaskList: *tasks,
 	}
 	f.render(w, r, http.StatusOK, data)
+}
+
+func (f *frontend) postHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Failed to parse form", http.StatusBadRequest)
+		return
+	}
+
+	taskData := Task{
+		Title: r.FormValue("title"),
+		State: StateTodo,
+	}
+
+	jsonData, err := json.Marshal(taskData)
+	if err != nil {
+		http.Error(w, "Failed to encode JSON", http.StatusInternalServerError)
+		return
+	}
+
+	resp, err := http.Post(backendUrl, "application/json", bytes.NewBuffer(jsonData))
+	if err != nil {
+		f.backendError(w, r, err)
+		return
+	}
+	defer resp.Body.Close()
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

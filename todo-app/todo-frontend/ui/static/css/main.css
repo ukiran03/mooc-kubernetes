@@ -50,8 +50,15 @@
 }
 
 /* The Text Input */
-#taskTitle {
-    flex: 1; /* Makes the input take up available space */
+#taskForm {
+    display: flex;       /* This enables flexbox for the children */
+    gap: 10px;           /* Adds space between the input and button */
+    width: 100%;         /* Ensures the form spans the container width */
+}
+
+/* Your existing styles will now work */
+#title {
+    flex: 1;
     padding: 10px 15px;
     border: 2px solid #e0e0e0;
     border-radius: 4px;
@@ -60,8 +67,8 @@
     transition: border-color 0.3s ease;
 }
 
-#taskTitle:focus {
-    border-color: blue; /* Blue border when typing */
+#title:focus {
+    border-color: blue;
 }
 
 /* Remove the dot before 'button' */

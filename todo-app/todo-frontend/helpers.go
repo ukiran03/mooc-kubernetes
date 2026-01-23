@@ -12,7 +12,7 @@ func (f *frontend) backendError(
 ) {
 	http.Error(
 		w,
-		fmt.Sprintf("Backed Error: %v", err),
+		fmt.Sprintf("Backend Error: %v", err),
 		http.StatusInternalServerError,
 	)
 }
